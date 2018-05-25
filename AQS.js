@@ -1,3 +1,6 @@
+var methods;
+module.exports.func = rollOneDie;
+
 /**
  * Returns a random Number between 1 and 6
  * @public
