@@ -1,0 +1,10 @@
+dist
+node_modules
+
+*.code-workspace
+*.log
+
+.vscode
+.grunt
+
+package-lock.json

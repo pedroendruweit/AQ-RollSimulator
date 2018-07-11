@@ -1,0 +1,84 @@
+<mvc:View
+	controllerName="com.aqs.controller.Aqs"
+	xmlns:html="http://www.w3.org/1999/xhtml"
+	xmlns="sap.m"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core"
+	xmlns:l="sap.ui.layout"
+	xmlns:f="sap.ui.layout.form"
+	xmlns:viz="sap.viz.ui5.controls"
+    xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
+    xmlns:viz.data="sap.viz.ui5.data"
+	displayBlock="true" >
+	<Page
+		title="Arcadia Quest - Dice Roll Simulation"
+		class="sapUiContentPadding" >
+		<content>
+			<VBox class="sapUiSmallMargin">
+				<VBox class="sapUiSmallMargin">
+					<f:SimpleForm
+						editable="true"
+						layout="ResponsiveGridLayout"
+						title="Dice Pool"
+						labelSpanXL="3"
+						labelSpanL="3"
+						labelSpanM="3"
+						labelSpanS="12"
+						adjustLabelSpan="false"
+						emptySpanXL="4"
+						emptySpanL="4"
+						emptySpanM="4"
+						emptySpanS="0"
+						columnsXL="1"
+						columnsL="1"
+						columnsM="1"
+						singleContainerFullSize="false" >
+						<f:content>
+							<Label text="Dice Number" />
+							<Input id="diceNumber" value="2"/>
+							<Label text="ReRoll Number" />
+							<Input id="reRollNumber" value="0"/>
+							<Label text="Dice Type" />
+							<Select id="diceType" selectedKey="Melee">
+								<items>
+									<core:Item text="Melee" key="Melee"/>
+									<core:Item text="Range" key="Range"/>
+									<core:Item text="Widow" key="Widow"/>
+									<core:Item text="WidowBuff" key="WidowBuff"/>
+									<core:Item text="Defence" key="Defence"/>
+								</items>
+							</Select>
+							<Label text="Number of Rolls" />
+							<Input id="numberRolls" value="10"/>
+							<Button text="Roll" press="onPress"/>
+						</f:content>
+					</f:SimpleForm>
+				</VBox>
+				<VBox class="sapUiSmallMargin">
+					<viz:VizFrame 
+						id="idVizFrame" 
+						uiConfig="{applicationSet:'fiori'}"
+						height="400px"
+						width="100%" 
+						vizType='column'>
+						<viz:dataset>
+							<viz.data:FlattenedDataset data="{/results}">
+								<viz.data:dimensions>
+									<viz.data:DimensionDefinition name="Hits" value="{hits}" />
+								</viz.data:dimensions>
+								<viz.data:measures>
+									<viz.data:MeasureDefinition name="Result" value="{result}" />
+								</viz.data:measures>
+							</viz.data:FlattenedDataset>
+						</viz:dataset>
+						<viz:feeds>
+							<viz.feeds:FeedItem id='valueAxisFeed' uid="valueAxis" type="Measure" values="Result" />
+							<viz.feeds:FeedItem id='categoryAxisFeed' uid="categoryAxis" type="Dimension" values="Hits" />
+						</viz:feeds>
+					</viz:VizFrame>
+				</VBox>
+			</VBox>
+
+		</content>
+	</Page>
+</mvc:View>
