@@ -8,7 +8,13 @@ sap.ui.define([
         onInit: function(){
             var oVizFrame = this.getView().byId("idVizFrame");
             oVizFrame.setVizProperties({
-                plotArea: { dataLabel: { visible: true } },
+                plotArea: { 
+                    dataLabel: { visible: true }, primaryScale: { fixedRange: true, maxValue: 100, minValue: 0 },
+                    window: {
+                        start:"firstDataPoint",
+                        end:"lastDataPoint"
+                    }
+                },
                 valueAxis: { title: { visible: true } },
                 categoryAxis: { title: { visible: true } },
                 title: { visible: true, text: 'Hits Distribution' }
