@@ -64,37 +64,40 @@ sap.ui.define([
                     }
                 }
             );
-            var aAttack2 = this.averageDistribution(diceNumber2, reRollNumber2, diceType2, numberRolls);
-            aAttack2.forEach(
-                function(property) {
-                    var exists = false;
-                    aElementObjects.results.forEach(
-                        function(element) {
-                            if (Number(property[0]) == element.hits) {
-                                exists = true;
-                                element.result2 = property[1];
-                            }
-                        }
-                    );
-                    if (!exists) {
-                        aElementObjects.results.push(
-                            { 
-                                hits: Number(property[0]), 
-                                result: 0, 
-                                result2: Number(property[1])
+            
+            if (this.getView().byId("enabledP2").getSelected()) {
+                var aAttack2 = this.averageDistribution(diceNumber2, reRollNumber2, diceType2, numberRolls);
+                aAttack2.forEach(
+                    function(property) {
+                        var exists = false;
+                        aElementObjects.results.forEach(
+                            function(element) {
+                                if (Number(property[0]) == element.hits) {
+                                    exists = true;
+                                    element.result2 = property[1];
+                                }
                             }
                         );
-                    };
-                    if (Number(property[0]) >= hitGoal) {
-                        goalSuccessP2 = Number(property[1]) + goalSuccessP2;
+                        if (!exists) {
+                            aElementObjects.results.push(
+                                { 
+                                    hits: Number(property[0]), 
+                                    result: 0, 
+                                    result2: Number(property[1])
+                                }
+                            );
+                        };
+                        if (Number(property[0]) >= hitGoal) {
+                            goalSuccessP2 = Number(property[1]) + goalSuccessP2;
+                        }
                     }
-                }
-            );
-
+                );
+                
+            };
+            
             this.getView().byId("goalSuccessP1").setText(goalSuccessP1.toFixed(2) > 100 ? 100 : goalSuccessP1.toFixed(2));
             this.getView().byId("goalSuccessP2").setText(goalSuccessP2.toFixed(2) > 100 ? 100 : goalSuccessP2.toFixed(2));
-
-
+            
             aElementObjects.results.sort(function(a, b) {
                 return a.hits - b.hits;
             });

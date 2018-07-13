@@ -14,7 +14,7 @@
 				<HBox class="sapUiSmallMargin" width="100%">
 					<VBox class="sapUiSmallMargin">
 						<f:Form 
-							id="FormDisplayAttack"
+							id="FormDisplayP1"
 							editable="true">
 							<f:title>
 								<core:Title text="Roll Details - Player1" />
@@ -80,7 +80,7 @@
 					</VBox>
 					<VBox class="sapUiSmallMargin">
 						<f:Form 
-							id="FormDisplayDefence"
+							id="FormDisplayP2"
 							editable="true">
 							<f:title>
 								<core:Title text="Roll Details - Player 2" />
@@ -132,6 +132,7 @@
 								</f:FormContainer>
 							</f:formContainers>
 						</f:Form>
+						<CheckBox id="enabledP2" text="Enable Player 2" selected="true" />
 					</VBox>
 					<VBox class="sapUiSmallMargin">
 						<f:Form 
