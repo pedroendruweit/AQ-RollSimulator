@@ -8,77 +8,266 @@
 	xmlns:f="sap.ui.layout.form"
 	xmlns:viz="sap.viz.ui5.controls"
     xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
-    xmlns:viz.data="sap.viz.ui5.data"
-	displayBlock="true" >
-	<Page
-		title="Arcadia Quest - Dice Roll Simulation"
-		class="sapUiContentPadding" >
-		<content>
-			<VBox class="sapUiSmallMargin">
-				<VBox class="sapUiSmallMargin">
-					<f:SimpleForm
-						editable="true"
-						layout="ResponsiveGridLayout"
-						title="Dice Pool"
-						labelSpanXL="3"
-						labelSpanL="3"
-						labelSpanM="3"
-						labelSpanS="12"
-						adjustLabelSpan="false"
-						emptySpanXL="4"
-						emptySpanL="4"
-						emptySpanM="4"
-						emptySpanS="0"
-						columnsXL="1"
-						columnsL="1"
-						columnsM="1"
-						singleContainerFullSize="false" >
-						<f:content>
-							<Label text="Dice Number" />
-							<Input id="diceNumber" value="2"/>
-							<Label text="ReRoll Number" />
-							<Input id="reRollNumber" value="0"/>
-							<Label text="Dice Type" />
-							<Select id="diceType" selectedKey="Melee">
-								<items>
-									<core:Item text="Melee" key="Melee"/>
-									<core:Item text="Range" key="Range"/>
-									<core:Item text="Widow" key="Widow"/>
-									<core:Item text="WidowBuff" key="WidowBuff"/>
-									<core:Item text="Defence" key="Defence"/>
-								</items>
-							</Select>
-							<Label text="Number of Rolls" />
-							<Input id="numberRolls" value="10"/>
-							<Button text="Roll" press="onPress"/>
-						</f:content>
-					</f:SimpleForm>
-				</VBox>
-				<VBox class="sapUiSmallMargin">
-					<viz:VizFrame 
-						id="idVizFrame" 
-						uiConfig="{applicationSet:'fiori'}"
-						height="400px"
-						width="100%" 
-						vizType='column'>
-						<viz:dataset>
-							<viz.data:FlattenedDataset data="{/results}">
-								<viz.data:dimensions>
-									<viz.data:DimensionDefinition name="Hits" value="{hits}" />
-								</viz.data:dimensions>
-								<viz.data:measures>
-									<viz.data:MeasureDefinition name="Result" value="{result}" />
-								</viz.data:measures>
-							</viz.data:FlattenedDataset>
-						</viz:dataset>
-						<viz:feeds>
-							<viz.feeds:FeedItem id='valueAxisFeed' uid="valueAxis" type="Measure" values="Result" />
-							<viz.feeds:FeedItem id='categoryAxisFeed' uid="categoryAxis" type="Dimension" values="Hits" />
-						</viz:feeds>
-					</viz:VizFrame>
-				</VBox>
-			</VBox>
-
-		</content>
+    xmlns:viz.data="sap.viz.ui5.data">
+		<Page>
+			<VBox class="sapUiSmallMargin" width="100%">
+				<HBox class="sapUiSmallMargin" width="100%">
+					<VBox class="sapUiSmallMargin">
+						<f:Form 
+							id="FormDisplayAttack"
+							editable="true">
+							<f:title>
+								<core:Title text="Roll Details - Player1" />
+							</f:title>
+							<f:layout>
+								<f:ResponsiveGridLayout
+									labelSpanXL="3"
+									labelSpanL="3"
+									labelSpanM="3"
+									labelSpanS="12"
+									adjustLabelSpan="true"
+									emptySpanXL="4"
+									emptySpanL="4"
+									emptySpanM="4"
+									emptySpanS="0"
+									columnsXL="1"
+									columnsL="1"
+									columnsM="1"
+									singleContainerFullSize="false" />
+							</f:layout>
+							<f:formContainers>
+								<f:FormContainer>
+									<f:formElements>
+										<f:FormElement label="Dice Number">
+											<f:fields>
+												<Input id="diceNumber" value="2" maxLength="2"/>
+											</f:fields>
+										</f:FormElement>
+										<f:FormElement label="ReRoll Number">
+											<f:fields>
+												<Input id="reRollNumber" value="0" maxLength="2"/>
+											</f:fields>
+										</f:FormElement>
+										<f:FormElement label="Dice Type">
+											<f:fields>
+												<Select id="diceType" selectedKey="Melee">
+													<items>
+														<core:Item text="Melee" key="Melee"/>
+														<core:Item text="Range" key="Range"/>
+														<core:Item text="Widow" key="Widow"/>
+														<core:Item text="WidowBuff" key="WidowBuff"/>
+														<core:Item text="Defence" key="Defence"/>
+														<core:Item text="Custom" key="Custom"/>
+													</items>
+												</Select>
+											</f:fields>
+										</f:FormElement>
+										<f:FormElement label="Number of Rolls">
+											<f:fields>
+												<Input id="numberRolls" value="100000" maxLength="6"/>
+											</f:fields>
+										</f:FormElement>
+										<f:FormElement label="Hit Goal">
+											<f:fields>
+												<Input id="hitGoal" value="1" maxLength="2"/>
+											</f:fields>
+										</f:FormElement>
+									</f:formElements>
+								</f:FormContainer>
+							</f:formContainers>
+						</f:Form>
+						<Button text="Roll" press="onPress"/>
+					</VBox>
+					<VBox class="sapUiSmallMargin">
+						<f:Form 
+							id="FormDisplayDefence"
+							editable="true">
+							<f:title>
+								<core:Title text="Roll Details - Player 2" />
+							</f:title>
+							<f:layout>
+								<f:ResponsiveGridLayout
+									labelSpanXL="3"
+									labelSpanL="3"
+									labelSpanM="3"
+									labelSpanS="12"
+									adjustLabelSpan="true"
+									emptySpanXL="4"
+									emptySpanL="4"
+									emptySpanM="4"
+									emptySpanS="0"
+									columnsXL="1"
+									columnsL="1"
+									columnsM="1"
+									singleContainerFullSize="false" />
+							</f:layout>
+							<f:formContainers>
+								<f:FormContainer>
+									<f:formElements>
+										<f:FormElement label="Dice Number">
+											<f:fields>
+												<Input id="diceNumber2" value="2"/>
+											</f:fields>
+										</f:FormElement>
+										<f:FormElement label="ReRoll Number">
+											<f:fields>
+												<Input id="reRollNumber2" value="0"/>
+											</f:fields>
+										</f:FormElement>
+										<f:FormElement label="Dice Type">
+											<f:fields>
+												<Select id="diceType2" selectedKey="Defence">
+													<items>
+														<core:Item text="Melee" key="Melee"/>
+														<core:Item text="Range" key="Range"/>
+														<core:Item text="Widow" key="Widow"/>
+														<core:Item text="WidowBuff" key="WidowBuff"/>
+														<core:Item text="Defence" key="Defence"/>
+														<core:Item text="Custom" key="Custom"/>
+													</items>
+												</Select>
+											</f:fields>
+										</f:FormElement>
+									</f:formElements>
+								</f:FormContainer>
+							</f:formContainers>
+						</f:Form>
+					</VBox>
+					<VBox class="sapUiSmallMargin">
+						<f:Form 
+							id="FormDisplayCustomDie"
+							editable="true">
+							<f:title>
+								<core:Title text="Custom Die" />
+							</f:title>
+							<f:layout>
+								<f:ResponsiveGridLayout
+									labelSpanXL="3"
+									labelSpanL="3"
+									labelSpanM="3"
+									labelSpanS="12"
+									adjustLabelSpan="true"
+									emptySpanXL="4"
+									emptySpanL="4"
+									emptySpanM="4"
+									emptySpanS="0"
+									columnsXL="1"
+									columnsL="1"
+									columnsM="1"
+									singleContainerFullSize="false" />
+							</f:layout>
+							<f:formContainers>
+								<f:FormContainer>
+									<f:formElements>
+										<f:FormElement label="Same as">
+											<f:fields>
+												<Label id="sameAs" text="Melee"/>
+											</f:fields>
+										</f:FormElement>
+										<f:FormElement label="Number of faces that is a HIT">
+											<f:fields>
+												<Select id="isAHit" selectedKey="4" change="onCustomChange">
+													<items>
+														<core:Item text="0" key="0"/>
+														<core:Item text="1" key="1"/>
+														<core:Item text="2" key="2"/>
+														<core:Item text="3" key="3"/>
+														<core:Item text="4" key="4"/>
+														<core:Item text="5" key="5"/>
+														<core:Item text="6" key="6"/>
+													</items>
+												</Select>
+											</f:fields>
+										</f:FormElement>
+										<f:FormElement label="Number of faces that grants extra Die (CRITs)">
+											<f:fields>
+												<Select id="grantsExtraDie" selectedKey="1" change="onCustomChange">
+													<items>
+														<core:Item text="0" key="0"/>
+														<core:Item text="1" key="1"/>
+														<core:Item text="2" key="2"/>
+														<core:Item text="3" key="3"/>
+														<core:Item text="4" key="4"/>
+														<core:Item text="5" key="5"/>
+													</items>
+												</Select>
+											</f:fields>
+										</f:FormElement>
+									</f:formElements>
+								</f:FormContainer>
+							</f:formContainers>
+						</f:Form>
+					</VBox>
+					
+				</HBox>
+				<HBox class="sapUiSmallMargin" width="100%">
+					<VBox class="sapUiSmallMargin">
+						<viz:VizFrame 
+							id="idVizFrame" 
+							uiConfig="{applicationSet:'fiori'}"
+							height="300px"
+							width="900px" 
+							vizType='combination'>
+							<viz:dataset>
+								<viz.data:FlattenedDataset data="{/results}">
+									<viz.data:dimensions>
+										<viz.data:DimensionDefinition name="Hits" value="{hits}" />
+									</viz.data:dimensions>
+									<viz.data:measures>
+										<viz.data:MeasureDefinition name="Player1" value="{result}" />
+										<viz.data:MeasureDefinition name="Player2" value="{result2}" />
+									</viz.data:measures>
+								</viz.data:FlattenedDataset>
+							</viz:dataset>
+							<viz:feeds>
+								<viz.feeds:FeedItem id='valueAxisFeed1' uid="valueAxis" type="Measure" values="Player1" />
+								<viz.feeds:FeedItem id='valueAxisFeed2' uid="valueAxis" type="Measure" values="Player2" />
+								<viz.feeds:FeedItem id='categoryAxisFeed' uid="categoryAxis" type="Dimension" values="Hits" />
+							</viz:feeds>
+						</viz:VizFrame>
+					</VBox>
+					<VBox class="sapUiSmallMargin">
+							<f:Form 
+								id="FormDisplayStatistics"
+								editable="false">
+								<f:title>
+									<core:Title text="Roll Statistics" />
+								</f:title>
+								<f:layout>
+									<f:ResponsiveGridLayout
+										labelSpanXL="3"
+										labelSpanL="3"
+										labelSpanM="3"
+										labelSpanS="12"
+										adjustLabelSpan="false"
+										emptySpanXL="4"
+										emptySpanL="4"
+										emptySpanM="4"
+										emptySpanS="0"
+										columnsXL="1"
+										columnsL="1"
+										columnsM="1"
+										singleContainerFullSize="false" />
+								</f:layout>
+								<f:formContainers>
+									<f:FormContainer>
+										<f:formElements>
+											<f:FormElement label="Percentage of Goal Success - Player 1">
+												<f:fields>
+													<Text id="goalSuccessP1" />
+												</f:fields>
+											</f:FormElement>
+											<f:FormElement label="Percentage of Goal Success - Player 2">
+												<f:fields>
+													<Text id="goalSuccessP2" />
+												</f:fields>
+											</f:FormElement>
+										</f:formElements>
+									</f:FormContainer>
+								</f:formContainers>
+							</f:Form>
+						</VBox>
+					</HBox>
+		</VBox>
 	</Page>
 </mvc:View>

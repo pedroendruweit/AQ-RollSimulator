@@ -9,7 +9,7 @@ sap.ui.define([
             var oVizFrame = this.getView().byId("idVizFrame");
             oVizFrame.setVizProperties({
                 plotArea: { 
-                    dataLabel: { visible: true }, primaryScale: { fixedRange: true, maxValue: 100, minValue: 0 },
+                    dataLabel: { visible: true }, primaryScale: { fixedRange: false, maxValue: 100, minValue: 0 },
                     window: {
                         start:"firstDataPoint",
                         end:"lastDataPoint"
@@ -26,25 +26,78 @@ sap.ui.define([
         },
 
         runApp: function(){
+            var goalSuccessP1 = 0;
+            var goalSuccessP2 = 0;
+            
             var diceNumber = Number(this.getView().byId("diceNumber").getValue());
             var reRollNumber = Number(this.getView().byId("reRollNumber").getValue());
             var diceType = this.getView().byId("diceType").getSelectedKey();
-            var numberRolls = Number(this.getView().byId("numberRolls").getValue());
-            
-            var aAverageDistribution = this.averageDistribution(diceNumber, reRollNumber, diceType, numberRolls);
-            var aElementObjects = { results: [] };
 
-            aAverageDistribution.forEach(
-                function(property) {        
+            var diceNumber2 = Number(this.getView().byId("diceNumber2").getValue());
+            var reRollNumber2 = Number(this.getView().byId("reRollNumber2").getValue());
+            var diceType2 = this.getView().byId("diceType2").getSelectedKey();
+
+            var numberRolls = Number(this.getView().byId("numberRolls").getValue());
+            var hitGoal = Number(this.getView().byId("hitGoal").getValue());
+            
+            if (numberRolls > 9999999) {
+                alert("Number of rolls is to large!\nFixed to 9999999.");
+                numberRolls = 9999999;
+                this.getView().byId("numberRolls").setValue(9999999);
+            }
+
+            var aElementObjects = { results: [] };
+            
+            var aAttack1 = this.averageDistribution(diceNumber, reRollNumber, diceType, numberRolls);
+            
+            aAttack1.forEach(
+                function(property) {
                     aElementObjects.results.push(
                         { 
                             hits: Number(property[0]), 
-                            result: Number(property[1]) 
+                            result: Number(property[1]), 
+                            result2: 0
                         }
                     );
+                    if (Number(property[0]) >= hitGoal) {
+                        goalSuccessP1 = Number(property[1]) + goalSuccessP1;
+                    }
+                }
+            );
+            var aAttack2 = this.averageDistribution(diceNumber2, reRollNumber2, diceType2, numberRolls);
+            aAttack2.forEach(
+                function(property) {
+                    var exists = false;
+                    aElementObjects.results.forEach(
+                        function(element) {
+                            if (Number(property[0]) == element.hits) {
+                                exists = true;
+                                element.result2 = property[1];
+                            }
+                        }
+                    );
+                    if (!exists) {
+                        aElementObjects.results.push(
+                            { 
+                                hits: Number(property[0]), 
+                                result: 0, 
+                                result2: Number(property[1])
+                            }
+                        );
+                    };
+                    if (Number(property[0]) >= hitGoal) {
+                        goalSuccessP2 = Number(property[1]) + goalSuccessP2;
+                    }
                 }
             );
 
+            this.getView().byId("goalSuccessP1").setText(goalSuccessP1.toFixed(2) > 100 ? 100 : goalSuccessP1.toFixed(2));
+            this.getView().byId("goalSuccessP2").setText(goalSuccessP2.toFixed(2) > 100 ? 100 : goalSuccessP2.toFixed(2));
+
+
+            aElementObjects.results.sort(function(a, b) {
+                return a.hits - b.hits;
+            });
             return aElementObjects;
         },
         
@@ -55,6 +108,30 @@ sap.ui.define([
             dataModel.setData(this.runApp());
         },
 
+        onCustomChange: function(){
+            var isAHit = this.getView().byId("isAHit").getSelectedKey();
+            var grantsExtraDie = this.getView().byId("grantsExtraDie").getSelectedKey();
+            switch (isAHit + "/" + grantsExtraDie) {
+                case "4/1":
+                    this.getView().byId("sameAs").setText("Melee");
+                    break;
+                case "3/1":
+                    this.getView().byId("sameAs").setText("Range");    
+                    break;
+                case "2/1":
+                    this.getView().byId("sameAs").setText("Defence");    
+                    break;
+                case "3/2":
+                    this.getView().byId("sameAs").setText("Widow");
+                    break;
+                case "3/3":
+                    this.getView().byId("sameAs").setText("WidowBuff");    
+                    break;
+                default:
+                    this.getView().byId("sameAs").setText("");
+                    break;
+            }
+        },
         
         /**
          * Returns a random Number between 1 and 6
@@ -157,6 +234,21 @@ sap.ui.define([
                         { isHit: false, grantsExtraDie: false }, 
                         { isHit: false, grantsExtraDie: false }
                     ];
+                case "Custom":
+                    var aCustomDie = [];
+                    var isAHit = Number(this.getView().byId("isAHit").getSelectedKey());
+                    var grantsExtraDie = Number(this.getView().byId("grantsExtraDie").getSelectedKey());
+                    for (let i = 1; i <= 6; i++) {
+                        var oDie = { isHit: false,  grantsExtraDie: false };
+                        if (i <= isAHit) {
+                            oDie.isHit = true;
+                        };
+                        if (i <= grantsExtraDie) {
+                            oDie.grantsExtraDie = true;
+                        };
+                        aCustomDie.push( oDie );
+                    };
+                    return aCustomDie;
                 default:
                     return [
                         { isHit: false, grantsExtraDie: false }, 
