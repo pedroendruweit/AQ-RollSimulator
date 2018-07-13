@@ -241,7 +241,7 @@ sap.ui.define([
                     var aCustomDie = [];
                     var isAHit = Number(this.getView().byId("isAHit").getSelectedKey());
                     var grantsExtraDie = Number(this.getView().byId("grantsExtraDie").getSelectedKey());
-                    for (let i = 1; i <= 6; i++) {
+                    for (var i = 1; i <= 6; i++) {
                         var oDie = { isHit: false,  grantsExtraDie: false };
                         if (i <= isAHit) {
                             oDie.isHit = true;
