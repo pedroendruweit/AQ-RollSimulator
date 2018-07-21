@@ -2,11 +2,10 @@
   "name": "aq_roll_simulator",
   "version": "0.0.1",
   "description": "App for calculating dice rolls for Arcadia Quest.",
-  "main": "server.js",
   "author": "Endruweit",
   "dependencies": {
-    "live-server": "1.2.0",
-    "npm": "^6.1.0"
+    "npm": "^6.1.0",
+    "live-server": "1.2.0"
   },
   "sapui5": {
     "version": "1.52.9",
