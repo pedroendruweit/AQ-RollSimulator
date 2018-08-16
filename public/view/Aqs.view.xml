@@ -135,69 +135,100 @@
 						<CheckBox id="enabledP2" text="Enable Player 2" selected="true" />
 					</VBox>
 					<VBox class="sapUiSmallMargin">
-						<f:Form 
-							id="FormDisplayCustomDie"
-							editable="true">
-							<f:title>
-								<core:Title text="Custom Die" />
-							</f:title>
-							<f:layout>
-								<f:ResponsiveGridLayout
-									labelSpanXL="3"
-									labelSpanL="3"
-									labelSpanM="3"
-									labelSpanS="12"
-									adjustLabelSpan="true"
-									emptySpanXL="4"
-									emptySpanL="4"
-									emptySpanM="4"
-									emptySpanS="0"
-									columnsXL="1"
-									columnsL="1"
-									columnsM="1"
-									singleContainerFullSize="false" />
-							</f:layout>
-							<f:formContainers>
-								<f:FormContainer>
-									<f:formElements>
-										<f:FormElement label="Same as">
-											<f:fields>
-												<Label id="sameAs" text="Melee"/>
-											</f:fields>
-										</f:FormElement>
-										<f:FormElement label="Number of faces that is a HIT">
-											<f:fields>
-												<Select id="isAHit" selectedKey="4" change="onCustomChange">
-													<items>
-														<core:Item text="0" key="0"/>
-														<core:Item text="1" key="1"/>
-														<core:Item text="2" key="2"/>
-														<core:Item text="3" key="3"/>
-														<core:Item text="4" key="4"/>
-														<core:Item text="5" key="5"/>
-														<core:Item text="6" key="6"/>
-													</items>
-												</Select>
-											</f:fields>
-										</f:FormElement>
-										<f:FormElement label="Number of faces that grants extra Die (CRITs)">
-											<f:fields>
-												<Select id="grantsExtraDie" selectedKey="1" change="onCustomChange">
-													<items>
-														<core:Item text="0" key="0"/>
-														<core:Item text="1" key="1"/>
-														<core:Item text="2" key="2"/>
-														<core:Item text="3" key="3"/>
-														<core:Item text="4" key="4"/>
-														<core:Item text="5" key="5"/>
-													</items>
-												</Select>
-											</f:fields>
-										</f:FormElement>
-									</f:formElements>
-								</f:FormContainer>
-							</f:formContainers>
-						</f:Form>
+						<Page title="Custom Die" titleLevel="H1" showFooter="false"/>
+						<Table width="18em">
+							<columns>
+								<Column width="2em" hAlign="Center" vAlign="Middle">
+									<Text text="Dice Face" />
+								</Column>
+								<Column width="2em" hAlign="Center">
+									<Text text="Hits Granted" />
+								</Column>
+								<Column width="2em" hAlign="Center">
+									<Text text="Grants Extra Die" />
+								</Column>
+							</columns>
+							<items>
+								<ColumnListItem>
+									<cells>
+										<!-- 1 -->
+										<Text text="1" />
+										<Input id="hits1" value="1" maxLength="2" change="onCustomChange" />
+										<Select id="extraDie1" selectedKey="true" change="onCustomChange">
+											<items>
+												<core:Item text="Yes" key="true"/>
+												<core:Item text="No" key="false"/>
+											</items>
+										</Select>
+									</cells>
+								</ColumnListItem>
+								<ColumnListItem>
+									<cells>
+										<!-- 2 -->
+										<Text text="2" />
+										<Input id="hits2" value="1" maxLength="2" change="onCustomChange" />
+										<Select id="extraDie2" selectedKey="false" change="onCustomChange">
+											<items>
+												<core:Item text="Yes" key="true"/>
+												<core:Item text="No" key="false"/>
+											</items>
+										</Select>
+									</cells>
+								</ColumnListItem>
+								<ColumnListItem>
+									<cells>
+										<!-- 3 -->
+										<Text text="3" />
+										<Input id="hits3" value="1" maxLength="2" change="onCustomChange" />
+										<Select id="extraDie3" selectedKey="false" change="onCustomChange">
+											<items>
+												<core:Item text="Yes" key="true"/>
+												<core:Item text="No" key="false"/>
+											</items>
+										</Select>
+									</cells>
+								</ColumnListItem>
+								<ColumnListItem>
+									<cells>
+										<!-- 4 -->
+										<Text text="4" />
+										<Input id="hits4" value="1" maxLength="2" change="onCustomChange" />
+										<Select id="extraDie4" selectedKey="false" change="onCustomChange">
+											<items>
+												<core:Item text="Yes" key="true"/>
+												<core:Item text="No" key="false"/>
+											</items>
+										</Select>
+									</cells>
+								</ColumnListItem>
+								<ColumnListItem>
+									<cells>
+										<!-- 5 -->
+										<Text text="5" />
+										<Input id="hits5" value="0" maxLength="2" change="onCustomChange" />
+										<Select id="extraDie5" selectedKey="false" change="onCustomChange">
+											<items>
+												<core:Item text="Yes" key="true"/>
+												<core:Item text="No" key="false"/>
+											</items>
+										</Select>
+									</cells>
+								</ColumnListItem>
+								<ColumnListItem>
+									<cells>
+										<!-- 6 -->
+										<Text text="6" />
+										<Input id="hits6" value="0" maxLength="2" change="onCustomChange" editable="false" />
+										<Select id="extraDie6" selectedKey="false" change="onCustomChange">
+											<items>
+												<core:Item text="Yes" key="true"/>
+												<core:Item text="No" key="false"/>
+											</items>
+										</Select>
+									</cells>
+								</ColumnListItem>
+							</items>
+						</Table>
 					</VBox>
 					
 				</HBox>

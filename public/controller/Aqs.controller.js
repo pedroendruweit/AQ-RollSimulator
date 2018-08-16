@@ -5,6 +5,8 @@ sap.ui.define([
     "use strict";
 
     return Controller.extend("com.aqs.controller.App", {
+        customDie: [],
+        
         onInit: function(){
             var oVizFrame = this.getView().byId("idVizFrame");
             oVizFrame.setVizProperties({
@@ -111,9 +113,36 @@ sap.ui.define([
             dataModel.setData(this.runApp());
         },
 
+        buildCustomDice: function(){
+            if (this.customDie.length < 1) {
+                this.customDie = [
+                    { isHit: (Number(this.getView().byId("hits1").getValue()) > 0),  grantsExtraDie: JSON.parse(this.getView().byId("extraDie1").getSelectedKey()), hits: Number(this.getView().byId("hits1").getValue()) }, 
+                    { isHit: (Number(this.getView().byId("hits2").getValue()) > 0),  grantsExtraDie: JSON.parse(this.getView().byId("extraDie2").getSelectedKey()), hits: Number(this.getView().byId("hits2").getValue()) }, 
+                    { isHit: (Number(this.getView().byId("hits3").getValue()) > 0),  grantsExtraDie: JSON.parse(this.getView().byId("extraDie3").getSelectedKey()), hits: Number(this.getView().byId("hits3").getValue()) }, 
+                    { isHit: (Number(this.getView().byId("hits4").getValue()) > 0), grantsExtraDie: JSON.parse(this.getView().byId("extraDie4").getSelectedKey()), hits: Number(this.getView().byId("hits4").getValue()) }, 
+                    { isHit: (Number(this.getView().byId("hits5").getValue()) > 0), grantsExtraDie: JSON.parse(this.getView().byId("extraDie5").getSelectedKey()), hits: Number(this.getView().byId("hits5").getValue()) }, 
+                    { isHit: (Number(this.getView().byId("hits6").getValue()) > 0), grantsExtraDie: JSON.parse(this.getView().byId("extraDie6").getSelectedKey()), hits: Number(this.getView().byId("hits6").getValue()) }
+                ];
+            }
+            return this.customDie;
+        },
+
         onCustomChange: function(){
-            var isAHit = this.getView().byId("isAHit").getSelectedKey();
-            var grantsExtraDie = this.getView().byId("grantsExtraDie").getSelectedKey();
+            this.customDie = [];
+            var customDie = this.buildCustomDice();
+            var isAHit = 0;
+            var grantsExtraDie = 0;
+            customDie.forEach(
+                function(property) {
+                    if (property.isHit) {
+                        isAHit++;
+                    }
+                    if (property.grantsExtraDie) {
+                        grantsExtraDie++;
+                    }
+                }
+            );
+            
             switch (isAHit + "/" + grantsExtraDie) {
                 case "4/1":
                     this.getView().byId("sameAs").setText("Melee");
@@ -177,7 +206,7 @@ sap.ui.define([
             var dicePoolLength = dicePool.length;
             for (var i = 0; i < dicePoolLength; i++) {
                 if (dicePool[i].isHit) {
-                    numberOfSucesses += 1;
+                    numberOfSucesses += dicePool[i].hits;
                 }
             }
             return numberOfSucesses;
@@ -194,72 +223,59 @@ sap.ui.define([
             switch (rollType) {
                 case "Widow":
                     return [
-                        { isHit: true,  grantsExtraDie: true }, 
-                        { isHit: true,  grantsExtraDie: true }, 
-                        { isHit: true,  grantsExtraDie: false }, 
-                        { isHit: false, grantsExtraDie: false }, 
-                        { isHit: false, grantsExtraDie: false }, 
-                        { isHit: false, grantsExtraDie: false }
+                        { isHit: true,  grantsExtraDie: true,  hits: 1 }, 
+                        { isHit: true,  grantsExtraDie: true,  hits: 1 }, 
+                        { isHit: true,  grantsExtraDie: false, hits: 1 }, 
+                        { isHit: false, grantsExtraDie: false, hits: 1 }, 
+                        { isHit: false, grantsExtraDie: false, hits: 1 }, 
+                        { isHit: false, grantsExtraDie: false, hits: 1 }
                     ];
                 case "WidowBuff":
                     return [
-                        { isHit: true,  grantsExtraDie: true }, 
-                        { isHit: true,  grantsExtraDie: true }, 
-                        { isHit: true,  grantsExtraDie: true }, 
-                        { isHit: false, grantsExtraDie: false }, 
-                        { isHit: false, grantsExtraDie: false }, 
-                        { isHit: false, grantsExtraDie: false }
+                        { isHit: true,  grantsExtraDie: true,  hits: 1 }, 
+                        { isHit: true,  grantsExtraDie: true,  hits: 1 }, 
+                        { isHit: true,  grantsExtraDie: true,  hits: 1 }, 
+                        { isHit: false, grantsExtraDie: false, hits: 1 }, 
+                        { isHit: false, grantsExtraDie: false, hits: 1 }, 
+                        { isHit: false, grantsExtraDie: false, hits: 1 }
                     ];
                 case "Defence":
                     return [
-                        { isHit: true,  grantsExtraDie: true }, 
-                        { isHit: true,  grantsExtraDie: false }, 
-                        { isHit: false, grantsExtraDie: false }, 
-                        { isHit: false, grantsExtraDie: false }, 
-                        { isHit: false, grantsExtraDie: false }, 
-                        { isHit: false, grantsExtraDie: false }
+                        { isHit: true,  grantsExtraDie: true,  hits: 1 }, 
+                        { isHit: true,  grantsExtraDie: false, hits: 1 }, 
+                        { isHit: false, grantsExtraDie: false, hits: 1 }, 
+                        { isHit: false, grantsExtraDie: false, hits: 1 }, 
+                        { isHit: false, grantsExtraDie: false, hits: 1 }, 
+                        { isHit: false, grantsExtraDie: false, hits: 1 }
                     ];
                 case "Melee":
                     return [
-                        { isHit: true,  grantsExtraDie: true }, 
-                        { isHit: true,  grantsExtraDie: false }, 
-                        { isHit: true,  grantsExtraDie: false }, 
-                        { isHit: true,  grantsExtraDie: false }, 
-                        { isHit: false, grantsExtraDie: false }, 
-                        { isHit: false, grantsExtraDie: false }
+                        { isHit: true,  grantsExtraDie: true,  hits: 1 }, 
+                        { isHit: true,  grantsExtraDie: false, hits: 1 }, 
+                        { isHit: true,  grantsExtraDie: false, hits: 1 }, 
+                        { isHit: true,  grantsExtraDie: false, hits: 1 }, 
+                        { isHit: false, grantsExtraDie: false, hits: 1 }, 
+                        { isHit: false, grantsExtraDie: false, hits: 1 }
                     ];
                 case "Range":
                     return [
-                        { isHit: true,  grantsExtraDie: true }, 
-                        { isHit: true,  grantsExtraDie: false }, 
-                        { isHit: true,  grantsExtraDie: false }, 
-                        { isHit: false, grantsExtraDie: false }, 
-                        { isHit: false, grantsExtraDie: false }, 
-                        { isHit: false, grantsExtraDie: false }
+                        { isHit: true,  grantsExtraDie: true,  hits: 1 }, 
+                        { isHit: true,  grantsExtraDie: false, hits: 1 }, 
+                        { isHit: true,  grantsExtraDie: false, hits: 1 }, 
+                        { isHit: false, grantsExtraDie: false, hits: 1 }, 
+                        { isHit: false, grantsExtraDie: false, hits: 1 }, 
+                        { isHit: false, grantsExtraDie: false, hits: 1 }
                     ];
                 case "Custom":
-                    var aCustomDie = [];
-                    var isAHit = Number(this.getView().byId("isAHit").getSelectedKey());
-                    var grantsExtraDie = Number(this.getView().byId("grantsExtraDie").getSelectedKey());
-                    for (var i = 1; i <= 6; i++) {
-                        var oDie = { isHit: false,  grantsExtraDie: false };
-                        if (i <= isAHit) {
-                            oDie.isHit = true;
-                        };
-                        if (i <= grantsExtraDie) {
-                            oDie.grantsExtraDie = true;
-                        };
-                        aCustomDie.push( oDie );
-                    };
-                    return aCustomDie;
+                    return this.buildCustomDice();
                 default:
                     return [
-                        { isHit: false, grantsExtraDie: false }, 
-                        { isHit: false, grantsExtraDie: false }, 
-                        { isHit: false, grantsExtraDie: false }, 
-                        { isHit: false, grantsExtraDie: false }, 
-                        { isHit: false, grantsExtraDie: false }, 
-                        { isHit: false, grantsExtraDie: false }
+                        { isHit: false, grantsExtraDie: false, hits: 0 }, 
+                        { isHit: false, grantsExtraDie: false, hits: 0 }, 
+                        { isHit: false, grantsExtraDie: false, hits: 0 }, 
+                        { isHit: false, grantsExtraDie: false, hits: 0 }, 
+                        { isHit: false, grantsExtraDie: false, hits: 0 }, 
+                        { isHit: false, grantsExtraDie: false, hits: 0 }
                 ];
             }
         },
