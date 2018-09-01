@@ -143,26 +143,26 @@ sap.ui.define([
                 }
             );
             
-            switch (isAHit + "/" + grantsExtraDie) {
-                case "4/1":
-                    this.getView().byId("sameAs").setText("Melee");
-                    break;
-                case "3/1":
-                    this.getView().byId("sameAs").setText("Range");    
-                    break;
-                case "2/1":
-                    this.getView().byId("sameAs").setText("Defence");    
-                    break;
-                case "3/2":
-                    this.getView().byId("sameAs").setText("Widow");
-                    break;
-                case "3/3":
-                    this.getView().byId("sameAs").setText("WidowBuff");    
-                    break;
-                default:
-                    this.getView().byId("sameAs").setText("");
-                    break;
-            }
+            //switch (isAHit + "/" + grantsExtraDie) {
+            //   case "4/1":
+            //        this.getView().byId("sameAs").setText("Melee");
+            //        break;
+            //    case "3/1":
+            //        this.getView().byId("sameAs").setText("Range");    
+            //        break;
+            //    case "2/1":
+            //        this.getView().byId("sameAs").setText("Defence");    
+            //       break;
+            //    case "3/2":
+            //        this.getView().byId("sameAs").setText("Widow");
+            //        break;
+            //    case "3/3":
+            //        this.getView().byId("sameAs").setText("WidowBuff");    
+            //        break;
+            //    default:
+            //        this.getView().byId("sameAs").setText("");
+            //        break;
+            //}
         },
         
         /**
