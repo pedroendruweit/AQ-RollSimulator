@@ -246,7 +246,7 @@ function castRay(tileFrom, tileTo, offSetCurve){
     while (true)
     {
         collisionList.push(current);
-        if (current.X == tileTo.X && current.Y == tileTo.Y || fail > 30)
+        if (current.X == tileTo.X && current.Y == tileTo.Y || fail > 1000)
         {
             return collisionList;
         }
