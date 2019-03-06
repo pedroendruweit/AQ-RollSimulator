@@ -227,41 +227,29 @@ function averageDistribution(numberOfDice, reRollPool, rollType, numberOfPlays){
  * @param {String} offSetCurve "N" for North and "S" for South. Represent the curve of the shot for perfect diagonal decision
  * @returns {Array} List of tiles that must be empty to enable line of sight
  */
-function castRay(tileFrom, tileTo, offSetCurve){
-    var xIncrement = (tileTo.X > tileFrom.X) ? 1 : -1;
-    var yIncrement = (tileTo.Y > tileFrom.Y) ? 1 : -1;
-
-    var offSet = (offSetCurve == "N") ? 0.1 : -0.1;
-
-    var delta = {X: Math.abs(tileFrom.X - tileTo.X), Y: Math.abs(tileFrom.Y - tileTo.Y)};
-    var error = delta.X - delta.Y + offSet;
-    var errorCorrect = {X: delta.X * 2, Y: delta.Y * 2};
-
-    var current = tileFrom;
-
-    var collisionList = [];
-
-    var fail = 1.
-
-    while (true)
-    {
-        collisionList.push(current);
-        if (current.X == tileTo.X && current.Y == tileTo.Y || fail > 1000)
-        {
-            return collisionList;
+let castRay = (tileFrom, tileTo, offSetCurve) => {
+    var xIncrement = (tileTo.X > tileFrom.X) ? 1 : -1
+    var yIncrement = (tileTo.Y > tileFrom.Y) ? 1 : -1
+    var offSet = (offSetCurve == "N") ? 0.1 : -0.1
+    var delta = {X: Math.abs(tileFrom.X - tileTo.X), Y: Math.abs(tileFrom.Y - tileTo.Y)}
+    var trajectory = delta.X - delta.Y + offSet
+    var correctTrajectory = {X: delta.X * 2, Y: delta.Y * 2}
+    var current = tileFrom
+    var collisionList = []
+    while (true){
+        collisionList.push(current)
+        if (current.X == tileTo.X && current.Y == tileTo.Y)
+          return collisionList
+        if (trajectory > 0){
+            current = {X: current.X + xIncrement, Y: current.Y}
+            trajectory -= correctTrajectory.Y
         }
-        if (error > 0)
-        {
-            current = {X: current.X + xIncrement, Y: current.Y};
-            error -= errorCorrect.Y;
-        }
-        else if (error < 0)
-        {
-            current = {X: current.X, Y: current.Y + yIncrement};
-            error += errorCorrect.X;
+        else if (trajectory < 0){
+            current = {X: current.X, Y: current.Y + yIncrement}
+            trajectory += correctTrajectory.X
         }
     }  
-};
+}
 
 /**
  * Returns a list of tiles that are touched by a line of sight
@@ -270,34 +258,93 @@ function castRay(tileFrom, tileTo, offSetCurve){
  * @param {object} tileTo Tile (X, Y) that the player is trying to hit
  * @returns {Array} List of tiles that must be empty to enable line of sight, considering both possibilities on perfect diagonals
  */
-function listCollisionTiles(tileFrom, tileTo){
-    var northPath = castRay( tileFrom, tileTo, "N" );
-    var southPath = castRay( tileFrom, tileTo, "S" );
-    var collisionTiles = [];
-
-    var pathLenght = ( northPath.length + southPath.length ) / 2.
-
+let listCollisionTiles = (tileFrom, tileTo) => {
+    var northPath = castRay(tileFrom, tileTo, "N")
+    var southPath = castRay(tileFrom, tileTo, "S")
+    var collisionTiles = []
+    var pathLenght = (northPath.length + southPath.length) / 2
     for (var i = 0; i < pathLenght; i++){
-        if (northPath[i].X == southPath[i].X && northPath[i].Y && northPath[i].Y){
+        if (northPath[i].X == southPath[i].X && northPath[i].Y == southPath[i].Y){
             if (i == 0){
-                collisionTiles.push( { attackingFrom: northPath[i] } );
-            } else if (i == pathLenght - 1) {
-                collisionTiles.push( { targetOn: northPath[i] } );
+                collisionTiles.push({attackingFrom: northPath[i]})
+            } else if (i == pathLenght - 1){
+                collisionTiles.push({targetOn: northPath[i]})
             } else {
-                collisionTiles.push( { hardCollision: northPath[i] } );
+                collisionTiles.push({hardCollision: northPath[i]})
             }
         } else {
-            collisionTiles.push( { softCollision: northPath[i], with: southPath[i] } );
+            collisionTiles.push({softCollision: northPath[i], with: southPath[i]})
         }
     }
+    return collisionTiles
+}
 
-    return collisionTiles;
+let shootPath = (tileFrom, tileTo) => {
+    var northPath = castRay(tileFrom, tileTo, "N")
+    var southPath = castRay(tileFrom, tileTo, "S")
+    var shootPath = []
+    var pathLenght = (northPath.length + southPath.length) / 2
+    for (var i = 0; i < pathLenght; i++){
+        let nPosition = ''
+        let sPosition = ''
+        if (typeof southPath[i + 1] !== "undefined" && typeof northPath[i + 1] !== "undefined"){
+            let spx = (southPath[i].X < 10)?'0':''
+            let spx1 = (southPath[i+1].X < 10)?'0':''
+            let spy = (southPath[i].Y < 10)?'0':''
+            let spy1 = (southPath[i+1].Y < 10)?'0':''
+            let npx = (northPath[i].X < 10)?'0':''
+            let npx1 = (northPath[i+1].X < 10)?'0':''
+            let npy = (northPath[i].Y < 10)?'0':''
+            let npy1 = (northPath[i+1].Y < 10)?'0':''
+            sPosition = spx + southPath[i].X + spy + southPath[i].Y + spx1 + southPath[i + 1].X + spy1 + southPath[i + 1].Y
+            nPosition = npx + northPath[i].X + npy + northPath[i].Y + npx1 + northPath[i + 1].X + npy1 + northPath[i + 1].Y
+            shootPath.push({viaS: sPosition, viaN: nPosition})
+        } else
+            return shootPath
+    }
+}
 
-};
+var fs = require('fs');
+var jsonData = fs.readFileSync('AQ_maps.json', 'utf8');
+var positions = JSON.parse(jsonData);
+var mapName = "district_of_hammers"
+
+let findCollision = (path) => {
+    for(var j = 0; j < positions[mapName].length; j++){
+        if(positions[mapName][j].pos === path &&
+           positions[mapName][j].c)
+            return {b: true, c: path}
+    }
+    return {b: false, c: path}
+}
+
+let los = (tileFrom, tileTo) => {
+    let path = shootPath(tileFrom, tileTo)
+    for(var i = 0; i < path.length-1; i++){
+        let c1  = findCollision(path[i].viaS)
+        let c1b = findCollision(path[i+1].viaS)
+        let c2  = findCollision(path[i].viaN)
+        let c2b = findCollision(path[i+1].viaN)
+        if((c1.b || c1b.b) && (c2.b || c2b.b))
+          return 'Blocked'
+    }
+    return 'LoS ok'
+}
+
+console.log(los({X:1, Y:1}, {X:2, Y:2})) //los ok
+console.log(los({X:9, Y:5}, {X:3, Y:4})) //los ok
+console.log(los({X:5, Y:1}, {X:5, Y:9})) //los ok
+console.log(los({X:3, Y:4}, {X:6, Y:7})) //los ok
+console.log(los({X:4, Y:6}, {X:6, Y:8})) //los ok
+console.log(los({X:1, Y:5}, {X:6, Y:4})) //los ok
+console.log(los({X:1, Y:5}, {X:5, Y:4})) //blocked
+console.log(los({X:4, Y:1}, {X:7, Y:4})) //blocked
+console.log(los({X:2, Y:1}, {X:3, Y:2})) //blocked
+
+
 
 // Exemples:
 // averageDistribution(5, 0, "Melee", 100) // Playing 100 times a Melee attack, with 5 dice, 0 re-rolls. This will display a success percentage distribution
 // averageResult(3, 1, "Defence", 10000) // Playing 10.000 times a Defence roll, with 3 dice and 1 re-roll. This will return the arithmetic average of successes
 //console.log( play(2, 1, "Range") ); // Play 2 attack dice (considering Range as hits), with 1 re-roll. Returns the number of successes for this random roll
-
-console.log( listCollisionTiles( {X: 1, Y: 1}, {X:2, Y: 12} ) );
+ //console.log( listCollisionTiles({X:1, Y:1}, {X:2, Y:12}));
