@@ -330,7 +330,7 @@ let los = (tileFrom, tileTo) => {
     }
     return 'LoS ok'
 }
-
+/*
 console.log(los({X:1, Y:1}, {X:2, Y:2})) //los ok
 console.log(los({X:9, Y:5}, {X:3, Y:4})) //los ok
 console.log(los({X:5, Y:1}, {X:5, Y:9})) //los ok
@@ -340,7 +340,7 @@ console.log(los({X:1, Y:5}, {X:6, Y:4})) //los ok
 console.log(los({X:1, Y:5}, {X:5, Y:4})) //blocked
 console.log(los({X:4, Y:1}, {X:7, Y:4})) //blocked
 console.log(los({X:2, Y:1}, {X:3, Y:2})) //blocked
-
+*/
 
 
 // Exemples:
@@ -348,3 +348,7 @@ console.log(los({X:2, Y:1}, {X:3, Y:2})) //blocked
 // averageResult(3, 1, "Defence", 10000) // Playing 10.000 times a Defence roll, with 3 dice and 1 re-roll. This will return the arithmetic average of successes
 //console.log( play(2, 1, "Range") ); // Play 2 attack dice (considering Range as hits), with 1 re-roll. Returns the number of successes for this random roll
  //console.log( listCollisionTiles({X:1, Y:1}, {X:2, Y:12}));
+
+
+console.log( listCollisionTiles( {X:1, Y:5}, {X:6, Y:4} ) )
+//console.log(los({X:1, Y:5}, {X:5, Y:4}))
