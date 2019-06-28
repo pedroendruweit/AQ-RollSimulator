@@ -12,54 +12,12 @@
 		},
 		"ach": "XX"
 	},
-	"sap.fiori": {
-		"_version": "1.9.0",
-		"registrationIds": [],
-		"archeType": "transactional"
-	},
-	"sap.ui": {
-		"_version": "1.9.0",
-		"technology": "UI5",
-		"icons": {
-			"icon": "sap-icon://detail-view",
-			"favIcon": "",
-			"phone": "",
-			"phone@2": "",
-			"tablet": "",
-			"tablet@2": ""
-		},
-		"deviceTypes": {
-			"desktop": true,
-			"tablet": true,
-			"phone": true
-		},
-		"supportedThemes": [
-			"sap_hcb",
-			"sap_bluecrystal"
-		],
-		"fullWidth": true
-	},
 	"sap.ui5": {
 		"_version": "1.9.0",
 		"rootView": {
 			"viewName": "com.aqs.view.App",
 			"type": "XML",
 			"id": "app"
-		},
-		"dependencies": {
-			"minUI5Version": "${sap.ui5.dist.version}",
-			"libs": {
-				"sap.ui.core": {
-					"minVersion": "1.52.9"
-				},
-				"sap.m": {
-					"minVersion": "1.52.9"
-				}
-			}
-		},
-		"contentDensities": {
-			"compact": true,
-			"cozy": true
 		},
 		"routing": {
 			"config": {
@@ -71,22 +29,18 @@
 				"transition":"slide",
 				"async": true
 			},
-			"routes": [
-				{	
-					"pattern": "",
-					"name": "aqs",
-					"target": "aqs"		
-				}
-      		],
+			"routes": [{	
+				"pattern": "",
+				"name": "aqs",
+				"target": "aqs"		
+			}],
 			"targets": {
-				"aqs":
-					{	
-						"viewPath":"com.aqs.view",
-						"viewID": "aqs",
-						"viewName": "Aqs",
-						"viewLevel" : 1	
-					}
-				
+				"aqs": {	
+					"viewPath":"com.aqs.view",
+					"viewID": "aqs",
+					"viewName": "Aqs",
+					"viewLevel" : 1	
+				}
 			}
 		}
 	}

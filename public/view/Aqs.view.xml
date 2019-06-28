@@ -153,8 +153,8 @@
 									<cells>
 										<!-- 1 -->
 										<Text text="1" />
-										<Input id="hits1" value="1" maxLength="2" change="onCustomChange" />
-										<Select id="extraDie1" selectedKey="true" change="onCustomChange">
+										<Input id="hits1" value="1" maxLength="2"  />
+										<Select id="extraDie1" selectedKey="true" >
 											<items>
 												<core:Item text="Yes" key="true"/>
 												<core:Item text="No" key="false"/>
@@ -166,8 +166,8 @@
 									<cells>
 										<!-- 2 -->
 										<Text text="2" />
-										<Input id="hits2" value="1" maxLength="2" change="onCustomChange" />
-										<Select id="extraDie2" selectedKey="false" change="onCustomChange">
+										<Input id="hits2" value="1" maxLength="2"  />
+										<Select id="extraDie2" selectedKey="false" >
 											<items>
 												<core:Item text="Yes" key="true"/>
 												<core:Item text="No" key="false"/>
@@ -179,8 +179,8 @@
 									<cells>
 										<!-- 3 -->
 										<Text text="3" />
-										<Input id="hits3" value="1" maxLength="2" change="onCustomChange" />
-										<Select id="extraDie3" selectedKey="false" change="onCustomChange">
+										<Input id="hits3" value="1" maxLength="2"  />
+										<Select id="extraDie3" selectedKey="false" >
 											<items>
 												<core:Item text="Yes" key="true"/>
 												<core:Item text="No" key="false"/>
@@ -192,8 +192,8 @@
 									<cells>
 										<!-- 4 -->
 										<Text text="4" />
-										<Input id="hits4" value="1" maxLength="2" change="onCustomChange" />
-										<Select id="extraDie4" selectedKey="false" change="onCustomChange">
+										<Input id="hits4" value="1" maxLength="2"  />
+										<Select id="extraDie4" selectedKey="false" >
 											<items>
 												<core:Item text="Yes" key="true"/>
 												<core:Item text="No" key="false"/>
@@ -205,8 +205,8 @@
 									<cells>
 										<!-- 5 -->
 										<Text text="5" />
-										<Input id="hits5" value="0" maxLength="2" change="onCustomChange" />
-										<Select id="extraDie5" selectedKey="false" change="onCustomChange">
+										<Input id="hits5" value="0" maxLength="2"  />
+										<Select id="extraDie5" selectedKey="false" >
 											<items>
 												<core:Item text="Yes" key="true"/>
 												<core:Item text="No" key="false"/>
@@ -218,8 +218,8 @@
 									<cells>
 										<!-- 6 -->
 										<Text text="6" />
-										<Input id="hits6" value="0" maxLength="2" change="onCustomChange" editable="false" />
-										<Select id="extraDie6" selectedKey="false" change="onCustomChange">
+										<Input id="hits6" value="0" maxLength="2"  editable="false" />
+										<Select id="extraDie6" selectedKey="false" >
 											<items>
 												<core:Item text="Yes" key="true"/>
 												<core:Item text="No" key="false"/>

@@ -54,13 +54,11 @@ sap.ui.define([
             
             aAttack1.forEach(
                 function(property) {
-                    aElementObjects.results.push(
-                        { 
-                            hits: Number(property[0]), 
-                            result: Number(property[1]), 
-                            result2: 0
-                        }
-                    );
+                    aElementObjects.results.push({ 
+                        hits: Number(property[0]), 
+                        result: Number(property[1]), 
+                        result2: 0
+                    });
                     if (Number(property[0]) >= hitGoal) {
                         goalSuccessP1 = Number(property[1]) + goalSuccessP1;
                     }
@@ -81,20 +79,17 @@ sap.ui.define([
                             }
                         );
                         if (!exists) {
-                            aElementObjects.results.push(
-                                { 
-                                    hits: Number(property[0]), 
-                                    result: 0, 
-                                    result2: Number(property[1])
-                                }
-                            );
+                            aElementObjects.results.push({ 
+                                hits: Number(property[0]), 
+                                result: 0, 
+                                result2: Number(property[1])
+                            });
                         };
                         if (Number(property[0]) >= hitGoal) {
                             goalSuccessP2 = Number(property[1]) + goalSuccessP2;
                         }
                     }
                 );
-                
             };
             
             this.getView().byId("goalSuccessP1").setText(goalSuccessP1.toFixed(2) > 100 ? 100 : goalSuccessP1.toFixed(2));
@@ -107,64 +102,25 @@ sap.ui.define([
         },
         
         onPress: function(oEventHandler){
+            this.customDie = [];
             var oVizFrame = this.getView().byId("idVizFrame");
             var dataModel = oVizFrame.getModel();
 
             dataModel.setData(this.runApp());
         },
 
-        buildCustomDice: function(){
+        buildCustomDice: function(numberOfFaces){
             if (this.customDie.length < 1) {
-                this.customDie = [
-                    { isHit: (Number(this.getView().byId("hits1").getValue()) > 0),  grantsExtraDie: JSON.parse(this.getView().byId("extraDie1").getSelectedKey()), hits: Number(this.getView().byId("hits1").getValue()) }, 
-                    { isHit: (Number(this.getView().byId("hits2").getValue()) > 0),  grantsExtraDie: JSON.parse(this.getView().byId("extraDie2").getSelectedKey()), hits: Number(this.getView().byId("hits2").getValue()) }, 
-                    { isHit: (Number(this.getView().byId("hits3").getValue()) > 0),  grantsExtraDie: JSON.parse(this.getView().byId("extraDie3").getSelectedKey()), hits: Number(this.getView().byId("hits3").getValue()) }, 
-                    { isHit: (Number(this.getView().byId("hits4").getValue()) > 0), grantsExtraDie: JSON.parse(this.getView().byId("extraDie4").getSelectedKey()), hits: Number(this.getView().byId("hits4").getValue()) }, 
-                    { isHit: (Number(this.getView().byId("hits5").getValue()) > 0), grantsExtraDie: JSON.parse(this.getView().byId("extraDie5").getSelectedKey()), hits: Number(this.getView().byId("hits5").getValue()) }, 
-                    { isHit: (Number(this.getView().byId("hits6").getValue()) > 0), grantsExtraDie: JSON.parse(this.getView().byId("extraDie6").getSelectedKey()), hits: Number(this.getView().byId("hits6").getValue()) }
-                ];
+                for (let i = 0; i < numberOfFaces; i++) {
+                    this.customDie.push( { 
+                        isHit: (Number(this.getView().byId("hits"+(i+1)).getValue()) > 0), 
+                        grantsExtraDie: JSON.parse(this.getView().byId("extraDie"+(i+1)).getSelectedKey()), 
+                        hits: Number(this.getView().byId("hits"+(i+1)).getValue()) }, 
+                    );
+                }
             }
             return this.customDie;
-        },
-
-        onCustomChange: function(){
-            this.customDie = [];
-            var customDie = this.buildCustomDice();
-            var isAHit = 0;
-            var grantsExtraDie = 0;
-            customDie.forEach(
-                function(property) {
-                    if (property.isHit) {
-                        isAHit++;
-                    }
-                    if (property.grantsExtraDie) {
-                        grantsExtraDie++;
-                    }
-                }
-            );
-            
-            //switch (isAHit + "/" + grantsExtraDie) {
-            //   case "4/1":
-            //        this.getView().byId("sameAs").setText("Melee");
-            //        break;
-            //    case "3/1":
-            //        this.getView().byId("sameAs").setText("Range");    
-            //        break;
-            //    case "2/1":
-            //        this.getView().byId("sameAs").setText("Defence");    
-            //       break;
-            //    case "3/2":
-            //        this.getView().byId("sameAs").setText("Widow");
-            //        break;
-            //    case "3/3":
-            //        this.getView().byId("sameAs").setText("WidowBuff");    
-            //        break;
-            //    default:
-            //        this.getView().byId("sameAs").setText("");
-            //        break;
-            //}
-        },
-        
+        },        
         /**
          * Returns a random Number between 1 and 6
          * @public
@@ -173,7 +129,6 @@ sap.ui.define([
         rollOneDie: function(){
             return Math.floor(Math.random() * 6) + 1;
         },
-
 
         /**
          * Based on a number of dice being played, and on the dice type,
@@ -267,7 +222,7 @@ sap.ui.define([
                         { isHit: false, grantsExtraDie: false, hits: 1 }
                     ];
                 case "Custom":
-                    return this.buildCustomDice();
+                    return this.buildCustomDice(6);
                 default:
                     return [
                         { isHit: false, grantsExtraDie: false, hits: 0 }, 
@@ -387,10 +342,5 @@ sap.ui.define([
             });
             return sortedArray;
         }
-
-        // Exemples:
-        // averageDistribution(5, 0, "Melee", 100) // Playing 100 times a Melee attack, with 5 dice, 0 re-rolls. This will display a success percentage distribution
-        // averageResult(3, 1, "Defence", 10000) // Playing 10.000 times a Defence roll, with 3 dice and 1 re-roll. This will return the arithmetic average of successes
-        // play(2, 1, "Range") // Play 2 attack dice (considering Range as hits), with 1 re-roll. Returns the number of successes for this random roll
     });   
 });

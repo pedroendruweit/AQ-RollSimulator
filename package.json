@@ -2,27 +2,5 @@
   "name": "aq_roll_simulator",
   "version": "0.0.1",
   "description": "App for calculating dice rolls for Arcadia Quest.",
-  "author": "Endruweit",
-  "devDependencies": {
-    "npm": "^6.1.0",
-    "live-server": "^1.2.0"
-  },
-  "sapui5": {
-    "version": "1.52.9",
-    "resources": "https://sapui5.hana.ondemand.com/1.52.9/resources",
-    "testResources": "https://sapui5.hana.ondemand.com/1.52.9/test-resources",
-    "libs": {},
-    "apps": {
-      "esocialdashboard": {
-        "namespace": "com.aqs",
-        "resources": "public"
-      }
-    },
-    "browsers": [
-      "Chrome"
-    ]
-  },
-  "dependencies": {
-    "node": "^10.15.2"
-  }
+  "author": "Endruweit"
 }
